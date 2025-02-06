@@ -5,14 +5,14 @@ import { useRafLoop } from 'react-use';
 
 import { PlayPauseIcon } from '../icons/PlayPause';
 
-import MarqueeItem from './MarqueeItem';
+import MarqueeItem from './MarqueeItem/MarqueeItem';
 import MemberCard from './MemberCard/MemberCard';
 
 import * as S from './InteractiveMarquee.styled';
 
 const _ = {
-  content: <MemberCard />,
-  speed: 2,
+  content: <MemberCard memberName="Alex Kim" />,
+  speed: 3,
   threshold: 0.014,
   wheelFactor: 1.8,
   dragFactor: 1.2,
@@ -26,24 +26,23 @@ const InteractiveMarquee = () => {
   const isScrolling = useRef(false); // 스크롤 중인지를 추적하는 변수
 
   const x = useRef(0);
-  const w = useRef(window.innerWidth).current;
+  const w = useRef(window.innerWidth).current; // 뷰포트의 너비
 
   const handlePlayPause = () => setIsRunning(!isRunning);
 
   // speed, opacity, skewX (Framer Motion Properties)
   const speed = useSpring(_.speed, {
     damping: 40,
-    stiffness: 90,
-    mass: 5,
+    stiffness: 80,
+    mass: 2,
   });
+
   const opacity = useTransform(speed, [-w * 0.25, 0, w * 0.25], [1, 0, 1]);
   const skewX = useTransform(speed, [-w * 0.25, 0, w * 0.25], [-10, 0, 10]);
 
   // 스크롤을 했을 경우 속도를 조절하는 함수
   const onWheel = (e) => {
     const normalized = normalizeWheel(e);
-    console.log(normalized);
-
     x.current = normalized.pixelY * _.wheelFactor;
 
     // Reset speed on scroll end
@@ -70,7 +69,7 @@ const InteractiveMarquee = () => {
 
   const onDragEnd = () => {
     if (!isRunning) return;
-    
+
     slowDown.current = false;
     marquee.current.classList.remove('drag');
     x.current = _.speed;
@@ -81,7 +80,7 @@ const InteractiveMarquee = () => {
     if (slowDown.current || !isRunning || Math.abs(x.current) < _.threshold)
       return;
 
-    x.current *= 0.66;
+    x.current *= 0.8;
 
     if (x.current < 0) {
       x.current = Math.min(x.current, 0);
@@ -97,7 +96,7 @@ const InteractiveMarquee = () => {
   return (
     <>
       <motion.div className="bg" style={{ opacity }} />
-      <div className="marquee-container">
+      <S.MarqueeContainer>
         <S.MarqueeHeader>
           <h2 className="title">
             Participants <span>.</span>
@@ -116,7 +115,7 @@ const InteractiveMarquee = () => {
           onDragStart={onDragStart}
           onDrag={onDrag}
           onDragEnd={onDragEnd}
-          dragElastic={0.01} // needs to be > 0 ¯\_(ツ)_/¯
+          dragElastic={0.000001} // needs to be > 0 ¯\_(ツ)_/¯
           $isRunning={isRunning}
         >
           <MarqueeItem
@@ -124,13 +123,8 @@ const InteractiveMarquee = () => {
             speed={speed}
             isRunning={isRunning}
           />
-          <MarqueeItem
-            content={_.content}
-            speed={speed}
-            isRunning={isRunning}
-          />
         </S.Marquee>
-      </div>
+      </S.MarqueeContainer>
     </>
   );
 };

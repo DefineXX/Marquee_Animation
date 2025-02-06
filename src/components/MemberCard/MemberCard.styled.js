@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
 export const MemberCardContainer = styled.div`
+  width: max-content;
+  height: fit-content;
+
   display: flex;
   align-items: center;
   gap: 2.4rem;
@@ -10,6 +13,8 @@ export const ProfileImageFrame = styled.div`
   width: fit-content;
   height: fit-content;
   padding: 0.8rem;
+
+  flex-shrink: 0;
 `;
 
 export const ProfileImage = styled.img`
@@ -20,6 +25,8 @@ export const ProfileImage = styled.img`
   border: 1px solid ${({ theme }) => theme.colors.HID_Grayscale[200]};
 
   -webkit-user-drag: none;
+
+  flex-shrink: 0;
 `;
 
 export const MemberInfo = styled.div`
