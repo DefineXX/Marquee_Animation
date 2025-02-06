@@ -9,15 +9,14 @@ html {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
   width: 100%;
-  overflow: hidden;
-  background-color: #1b1a17;
+  height: 100vh;
+  background-color: #dfdfdf;
 }
 
 body {
-  color: #e6d5b8;
-  font-family: 'Barlow Condensed', sans-serif;
+  color: #262626;
+  font-family: greycliff-cf, sans-serif;
 }
 
 body:before {
@@ -25,6 +24,11 @@ body:before {
   right: 1rem;
   top: 1rem;
   content: 'Drag or scroll';
+  color: #262626;
+}
+
+button {
+  cursor: pointer;
 }
 
 .loader {
@@ -33,18 +37,29 @@ body:before {
   left: 1rem;
 }
 
-.marquee {
-  display: flex;
+.marquee-container {
+  width: 100%;
   height: 100vh;
-  align-items: center;
-  cursor: -webkit-grab;
+  padding: 120px 64px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+
+  span {
+    color: #ffc700;
+  }
 }
 
 .item {
-  font-size: 30vw;
-  letter-spacing: -0.05em;
-  padding-right: 0.25em;
-  white-space: nowrap;
+  padding-right: 120px;
   -webkit-user-select: none;
   user-select: none;
   /* will-change: transform; */
@@ -59,6 +74,7 @@ body:before {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: -1;
   height: 100%;
   width: 100%;
   background-color: #e6d5b8;
